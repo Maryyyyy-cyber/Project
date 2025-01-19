@@ -1,0 +1,150 @@
+from telebot import types
+import telebot
+token = '7995506038:AAH8CD4ZxL3fn7-rPmDNc-gwu5BwuQdSXD4'
+bot = telebot.TeleBot(token, parse_mode = 'html')
+
+@bot.message_handler(commands = ['start'])
+def start(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton("Перейти к прохождению ᯓ★")
+    btn2 = types.KeyboardButton("Обратная связь ⋆˚🐾˖°")
+    btn3 = types.KeyboardButton("Пройденные тесты и викторины ୨ৎ")
+    markup.add(btn1, btn2, btn3)
+    bot.send_message(message.chat.id, text="Привет! Выбери нужную позицию в меню ниже ⁀➴", reply_markup=markup)
+
+@bot.message_handler(content_types=["text"])
+def answer_btn(message):
+    if message.text == "Перейти к прохождению ᯓ★":
+        button1 = types.InlineKeyboardButton("𐙚викторины", callback_data='викторины')
+        button2 = types.InlineKeyboardButton("𐙚тесты", callback_data = 'тесты')
+        keyboard = [[button1, button2]]
+        markup = types.InlineKeyboardMarkup(row_width=3)
+        markup.add(button1)
+        markup.add(button2)
+        bot.send_message(message.chat.id, text = f'    <b>Привет! С вами Маша, Полина и Саша🌟</b>\t \n\n •Мы создали этот бот, чтобы упростить, сделать веселее и увлекательнее процесс изучения такого непростого направления, как программирование💻 \n•С нашим ботом вы не только протестируете свои знания и проверите их на практике, но и узнать больше новой интересной информации о мире программирования! \n\n\n <b>небольшая инструкция:</b> \n\n <tg-spoiler>♡♡ <b>Что включает в себя бот?</b></tg-spoiler> \n\n - Интерактивные тесты по разным темам програмиирования с возможностью вспомнить теорию перед прохождением(для этого после нажатия кнопки «Выбрать тест» выберите «<u>Ознакомиться с теорией</u>») \n - Тесты с практическими заданиями с возможностью посмотреть варианты решения после прохождения теста(для этого после завершения выберите кнопку «<u>Посмотреть решение</u>») \n - Интерактивные викторины по разным направлениям программирования: от теоретического материала до викторин на тему «Интересные факты из мира программирования» \n\n <tg-spoiler>♡♡ <b>Есть идея по улучшению бота или идеи для новых тестов и викторин?</b></tg-spoiler> \n\n - Выбирайте кнопку «<u>Обратная связь</u>» и пишите нам, мы всегда рады новым идеям!🌟 \n\n <b>->Чтобы перейти  к проверке своих знаний, выбирай нужную кнопку из списка ниже</b> ⁀➴', parse_mode = "html", reply_markup=markup)
+    elif message.text == "Обратная связь ⋆˚🐾˖°":
+        button = types.InlineKeyboardButton("наши контакты", callback_data='contacts')
+        keyboard_contacts = [[button]]
+        markup_contacts = types.InlineKeyboardMarkup(keyboard_contacts)
+        bot.send_message(message.chat.id, text = f'<b>Есть идеи по улучшению функционала бота?💡</b>\t \n\n - - - > Пиши нам, мы всегда открыты к новым идеям!', parse_mode = "html", reply_markup=markup_contacts)
+    elif message.text == "Пройденные тесты и викторины ୨ৎ":
+        bot.send_message(message.chat.id, "вы нажали на кнопку 3")
+    elif message.text == 'A':
+        victory_1(message)
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def querty_handler(call):
+    if call.data == 'викторины':
+        button_1 = types.InlineKeyboardButton("Интересные факты из мира программирования", callback_data = '1')
+        button_2 = types.InlineKeyboardButton("Необычные языки программирования(1)", callback_data = '2')
+        button_3 = types.InlineKeyboardButton("Необычные языки программирования(2)", callback_data='викторина 3')
+        button_4 = types.InlineKeyboardButton("викторина 4", callback_data='викторина 4')
+        keyboard_2 = [[button_1, button_2, button_3, button_4]]
+        markup_2 = types.InlineKeyboardMarkup(row_width=3)
+        markup_2.add(button_1)
+        markup_2.add(button_2)
+        markup_2.add(button_3)
+        markup_2.add(button_4)
+        bot.send_message(call.message.chat.id, text = f"викторины:", reply_markup=markup_2)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
+    elif call.data == 'тесты':
+        bttn_1 = types.InlineKeyboardButton("тест 1",callback_data='тест1')
+        bttn_2 = types.InlineKeyboardButton("тест 2", callback_data='тест2')
+        bttn_3 = types.InlineKeyboardButton("тест 3", callback_data='тест3')
+        bttn_4 = types.InlineKeyboardButton("тест 4", callback_data='тест4')
+        keyboard_3 = [[bttn_1, bttn_2, bttn_3, bttn_4]]
+        markup_3 = types.InlineKeyboardMarkup(row_width=3)
+        markup_3.add(bttn_1)
+        markup_3.add(bttn_2)
+        markup_3.add(bttn_3)
+        markup_3.add(bttn_4)
+        bot.send_message(call.message.chat.id, text = f"тесты:", reply_markup=markup_3)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
+    elif call.data == 'contacts':
+        bot.send_message(call.message.chat.id, text = f'@Blood_Marryy')
+    elif call.data == '1':
+        bot.delete_message(call.message.chat.id, call.message.message_id)
+        victory_1("start1", call.message.chat.id)
+    elif call.data == 'A1' or call.data == 'B1' or call.data == 'C1':
+        bot.delete_message(call.message.chat.id, call.message.message_id)
+        victory_1(call.data, call.message.chat.id)
+    #elif call.data == '2':
+        #bot.delete_message(call.message.chat.id, call.message.message_id)
+        #victory_2("start_2", call.message.chat.id)
+
+
+question_v1 = ['𐙚викторина: <b>«Интересные факты из мира программирования»</b>\n\n Готовы??\n <b>Первый вопрос:⁀➴</b>\n Как назывался первый, разработанный в домашних условиях, вирус? ୨♡୧\n (Напишите боту только букву ответа английсими буквами)', '<b>Второй вопрос:⁀➴</b> \n\n В честь чего был назван язык программирования Python? 🐍', '<b>Третий вопрос:⁀➴</b>\n\n Как звали первую в мире женщину-программиста? ୨♡୧', '<b>Четвёртый вопрос:⁀➴</b>\n\n Как называют шуточный секрет, заложенный создателями в ПО? ୨♡୧', '<b>Пятый вопрос:⁀➴</b>\n\n Как думаете, правда ли, что Python есть на Марсе?👽', '<b>Шестой вопрос:⁀➴</b>\n\n Как называется необычный язык программирования, в котором программа выглядит, как набор разноцветных пиксельных изображений?👾', '<b>Седьмой вопрос:⁀➴</b>\n\n Где живет самое большое количество программистов?💻', '<b>Девятый вопрос:⁀➴</b>\n\n Как вы думаете, во сколько лет самый молодой программист освоил  язык программирования?👦🏼']
+multi1 = ['A1: Creeper(1971 год)', 'A1: Змея', 'A1: Грейс Хоппер', 'A1: оладушка', 'A1: Правда', 'A1: Malbolge', 'A1: Россия', 'A1: 17 лет', 'A1: метод утёнка'] #все ответы викторины под буквой А
+multi2 = ['B1: Elk Cloner(1981 год)', 'B1: В честь фамилии создателя языка', 'B1: Ада Лавлейс', 'B1: крыса', 'B1: Вымысел', 'B1: Befunge', 'B1: Китай', 'B: 6 лет', 'B1: метод змеи']
+multi3 = ['C1: Brain(1986 год)', 'C1: В честь комедийного шоу', 'С1: Мэри Келлер', 'С1: пасхалка', 'C1: Инопланетяне существуют?', 'C1: Piet', 'C1: США', 'C1: 10 лет', 'C1: метод кролика']
+correctAnswer = ['B1', 'C1', 'B1', 'C1', 'A1', 'C1', 'B1', 'B1', 'A1']
+question_v2 = ['𐙚викторина: <b>«Необычные языки программирования(1)»</b> \n\n Готовы??\n\n <b>Первый вопрос:⁀➴</b> \n Что такое эзотерические языки программирования?👾\n\n (Напишите боту только букву ответа)', '<b>Второй вопрос:⁀➴</b>\n\nПройдемся по эзотерическим языкам программирования.\n\nКак вы думаете, как язык относится к данному типу?💻', '<b>Третий вопрос:⁀➴</b> \n\nКак называется язык программирования, состоящих лишь из 8 команд?👀', '<b>Четвертый вопрос:⁀➴</b> \n\nКак думаете, как назывался самый первый эзотерический язык программирования?📎', '<b>']
+
+multi1_v2 = ['A: Таких не бывает', 'А: Java', 'A: Brainf*ck', 'A: INTERCAL', 'A: INTERCAL', 'A: Velato', 'A: Звучит, как бред', 'A: Существует', 'A: Befunge']
+multi2_v2 = ['B: Нестандартные и необычные языки', 'B: Avrasm', 'B: Befunge', 'B: FALSE', 'B: Ook!', 'B: ArnoldC', 'B: Существует', 'B: Не существует', 'B: Malbolge']
+multi3_v2 = ['C: Сектантские языки', 'C: Hexagony', 'C: Piet', 'C: Befunge', 'C: LOLCODE', 'C: Malbolge', 'C: Не существует', 'C: Что за бред?', 'C: Whitespace']
+correctAnswer_v2 = ['B', 'C', 'A', 'A', 'A', 'A', 'B', 'A', 'B']
+valueWon = ['0', '100', '200', '300', '500', '1.000', '1.500', '3.000', '5.000', '7.500', '15.000', '25.000','50.000', '100.000', '250.000', '1.000.000']
+x1 = 0
+x2 = 0
+
+def victory_1(message, chat_id = None):
+    global x1
+    global check
+    global score
+    btn1 = types.InlineKeyboardButton("A1", callback_data='A1')
+    btn2 = types.InlineKeyboardButton("B1", callback_data='B1')
+    btn3 = types.InlineKeyboardButton("C1", callback_data='C1')
+    keyboard_ans = [[btn1, btn2, btn3]]
+    markup_ans = types.InlineKeyboardMarkup(row_width=3)
+    markup_ans.add(btn1)
+    markup_ans.add(btn2)
+    markup_ans.add(btn3)
+    if message == 'start1':
+        ansr = 'start1'
+        x1 = 0
+        bot.send_message(chat_id, str(question_v1[x1]+'\n' + multi1[x1]+'\n' + multi2[x1]+'\n' + multi3[x1]+'\n'))
+    elif (str.upper(message) == 'A1' or str.upper(message) == 'B1' or str.upper(message) == 'C1') and x1<14:
+        if str.upper(message) == correctAnswer[x1]:
+            bot.send_message(message.chat.id, 'Правильно')
+            x1+=1
+            bot.send_message(chat_id, 'Текущий счёт' + str(valueWon[x1]))
+            bot.send_message(chat_id, str(question_v1[x1] + '\n' + multi1[x1] + '\n' + multi2[x1]+'\n' + multi3[x1]+'\n'), reply_markup=markup_ans)
+        else:
+            bot.send_message(chat_id, 'неправильно. Игра начинается заново')
+            btn = types.InlineKeyboardButton("Заново", callback_data='1')
+            markup_1 = types.InlineKeyboardMarkup(row_width=3)
+            markup_1.add(btn)
+            bot.send_message(chat_id, 'Нажми, чтобы начать',reply_markup=markup_1)
+    else:
+        bot.send_message(chat_id, str(question_v1[x1]+'\n'+multi1[x1] + '\n' + multi2[x1] + '\n' + multi3[x1] + '\n'), reply_markup=markup_ans)
+
+def victory_2(message, chat_id = None):
+    global x2
+    global check
+    global score
+    btn_1 = types.InlineKeyboardButton("A", callback_data='A2')
+    btn_2 = types.InlineKeyboardButton("B", callback_data='B2')
+    btn_3 = types.InlineKeyboardButton("C", callback_data='C2')
+    keyboard_ans = [[btn_1, btn_2, btn_3]]
+    markup_ans = types.InlineKeyboardMarkup(row_width=3)
+    markup_ans.add(btn_1)
+    markup_ans.add(btn_2)
+    markup_ans.add(btn_3)
+    if message == 'start_2':
+        ansr = 'start_2'
+        bot.send_message(chat_id, str(question_v2[x2]+'\n' + multi1_v2[x2]+'\n' + multi2_v2[x2]+'\n' + multi3_v2[x2]+'\n'))
+    elif (str.upper(message.text) == 'A' or str.upper(message.text) == 'B' or str.upper(message.text) == 'C') and x2 < 14:
+        if str.upper(message.text) == correctAnswer_v2[x2]:
+            bot.send_message(message.chat.id, 'Правильно')
+            x2+=1
+            bot.send_message(chat_id, 'Текущий счёт' + str(valueWon[x2]))
+            bot.send_message(chat_id, str(question_v2[x2] + '\n' + multi1_v2[x1] + '\n' + multi2_v2[x2] + '\n' + multi3_v2[x2] + '\n'))
+        else:
+            bot.send_message(message.chat.id, 'неправильно. Игра начинается заново')
+            bot.send_message(message.chat.id, 'Отправь 2, чтобы начать')
+    else:
+        bot.send_message(message.chat.id, str(question_v2[x2] + '\n' + multi1_v2[x2] + '\n' + multi2_v2[x2] + '\n' + multi3_v2[x2] + '\n'))
+
+bot.polling(none_stop=True, interval=0)
